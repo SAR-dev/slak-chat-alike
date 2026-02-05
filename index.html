@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Messaging Dashboard with Top Nav</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#135bec',
+              'background-light': '#f6f6f8',
+              'background-dark': '#101622',
+              'sidebar-dark': '#0d111a',
+            },
+            fontFamily: {
+              display: ['Plus Jakarta Sans'],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #232f48;
+        border-radius: 10px;
+      }
+      .message-row:hover .message-actions {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden"
+  >
+    <div class="flex flex-col h-screen w-full overflow-hidden">
+      <header
+        class="h-14 bg-[#090d14] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shrink-0 z-10"
+      >
+        <div class="flex items-center gap-4">
+          <div
+            class="size-9 rounded-xl bg-primary flex items-center justify-center text-white cursor-pointer hover:opacity-90 transition-all"
+          >
+            <span class="material-symbols-outlined text-[22px]">hub</span>
+          </div>
+          <div class="hidden md:flex items-center gap-1">
+            <span class="font-bold text-sm tracking-tight">SocialConnect</span>
+          </div>
+        </div>
+        <div class="flex-1 max-w-2xl px-8">
+          <div class="relative group">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+              >search</span
+            >
+            <input
+              class="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg pl-9 pr-4 py-1.5 text-sm focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-500 transition-all"
+              placeholder="Search conversations, files, or people..."
+              type="text"
+            />
+            <div
+              class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-0 group-focus-within:opacity-100 transition-opacity"
+            >
+              <kbd
+                class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 border border-slate-700"
+                >ESC</kbd
+              >
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <span class="material-symbols-outlined text-[22px]"
+              >help_outline</span
+            >
+          </button>
+          <button
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <span class="material-symbols-outlined text-[22px]">settings</span>
+          </button>
+          <div class="h-6 w-[1px] bg-slate-800 mx-1"></div>
+          <div class="flex items-center gap-2 pl-1 cursor-pointer group">
+            <div class="relative">
+              <img
+                class="size-8 rounded-lg border border-slate-700 group-hover:border-primary transition-colors"
+                data-alt="The current user's profile picture"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuARe-EcQbD42dPKfFsVZqdjEssVuM59obCMeoCx6dNgUOZ48qjATFyNk_Go7U2kGWIdgIeLZtL3UVfddJU-EOgfJ9UIKNRFZiDlp6oUq82SoIefNlwh4Poq2zVKuwrCTgteVxX9e5XtkErMk6maGK4PaexEhL7sYo1MZzpSReFRdJ5Yszb9ubkCFs7KzvTmU32Vq_TRM_DucC2HDrDcS85I2_igKBP9RhUXJRidvPUgJ0pvMkACijpVtqJvXAu0jGZOI5Im77lXvMxs"
+              />
+              <div
+                class="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full bg-green-500 border-2 border-[#090d14]"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="flex flex-1 overflow-hidden">
+        <aside
+          class="w-64 flex flex-col bg-sidebar-dark border-r border-slate-200 dark:border-slate-800 shrink-0"
+        >
+          <div
+            class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between"
+          >
+            <h2 class="font-bold text-lg tracking-tight">Design Team</h2>
+            <span
+              class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white"
+              >keyboard_arrow_down</span
+            >
+          </div>
+          <nav
+            class="flex-1 overflow-y-auto custom-scrollbar px-2 pt-4 space-y-6"
+          >
+            <div class="space-y-1">
+              <a
+                class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                <span class="text-sm font-medium">Threads</span>
+              </a>
+              <a
+                class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >alternate_email</span
+                >
+                <span class="text-sm font-medium">Mentions</span>
+              </a>
+            </div>
+            <div>
+              <div class="flex items-center justify-between px-3 mb-2">
+                <span
+                  class="text-xs font-bold uppercase tracking-wider text-slate-500"
+                  >Channels</span
+                >
+                <span
+                  class="material-symbols-outlined text-xs text-slate-500 cursor-pointer hover:text-white"
+                  >add</span
+                >
+              </div>
+              <div class="space-y-1">
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 bg-primary/10 text-primary border-r-2 border-primary rounded-l-lg"
+                  href="#"
+                >
+                  <span class="material-symbols-outlined text-[18px]">tag</span>
+                  <span class="text-sm font-medium">general</span>
+                </a>
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                  href="#"
+                >
+                  <span class="material-symbols-outlined text-[18px]">tag</span>
+                  <span class="text-sm font-medium">announcements</span>
+                </a>
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                  href="#"
+                >
+                  <span class="material-symbols-outlined text-[18px]">tag</span>
+                  <span class="text-sm font-medium">project-alpha</span>
+                </a>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between px-3 mb-2">
+                <span
+                  class="text-xs font-bold uppercase tracking-wider text-slate-500"
+                  >Direct Messages</span
+                >
+                <span
+                  class="material-symbols-outlined text-xs text-slate-500 cursor-pointer hover:text-white"
+                  >add</span
+                >
+              </div>
+              <div class="space-y-1">
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                  href="#"
+                >
+                  <div class="relative">
+                    <img
+                      class="size-6 rounded-md object-cover"
+                      data-alt="Avatar profile picture for Alice"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_dNXLsSjbEa1-uDCUA_JmHRulSWQ-rIBqnPy9UHZpsEWCd6tCVZxrQds_XTtoCBAnZlzJYiVsCJaWENLBL2AX6N85Srraop5N-0fMIsf4egFVTQRf2NbphjHj49Amz9kDef4uaogQqihwBAAWWkeUrDduvv1_4Z36xbMTaLTSxQBNsOf-uVKtL4hn3CpSgxDWmVmTUjgpwkOLwI6AfaJUw9IX_E33InQAxAfKIUgHWRGWyGGgNakXxdJeRFSH7Z4dKzgh3YpLbI1y"
+                    />
+                    <div
+                      class="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-green-500 border-2 border-sidebar-dark"
+                    ></div>
+                  </div>
+                  <span class="text-sm font-medium">Alice Johnson</span>
+                </a>
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                  href="#"
+                >
+                  <div class="relative opacity-70">
+                    <img
+                      class="size-6 rounded-md object-cover"
+                      data-alt="Avatar profile picture for Bob"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa81bjayTYxJ-OxTaJGGr_KvimcaN_q0Sa7artwclVg9sByuDrGfJfRaeA6DfbZ2QKjjdX0zxpXvVKKF1Nrpemevany8RvsHz74ER9srNk8Zs7X2c4LgJekMZTBfclHur18I6lDeJaHgCGSZcfwTPAzvSuSL7IZxidOnEAiGEMCOWuASvzq9taSkecRLE4Nc3UZ-fLcDflF1E-IgKyFhMWrrAJmJbiPuA_k9gxGaYh6AefW4U4UdpZ98AEuoijplYuf1VKcTeOwB_p"
+                    />
+                    <div
+                      class="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-slate-500 border-2 border-sidebar-dark"
+                    ></div>
+                  </div>
+                  <span class="text-sm font-medium">Bob Smith</span>
+                </a>
+                <a
+                  class="flex items-center gap-3 px-3 py-1.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg transition-colors"
+                  href="#"
+                >
+                  <div class="relative">
+                    <img
+                      class="size-6 rounded-md object-cover"
+                      data-alt="Avatar profile picture for Charlie"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5tQx7Z-jtWJjVPqRyFvc4ZWdY9XVHwDtEJh-HoKw_9LAaXoYxwf-o_iwIBb_xdfzncbu2t2HS8eb8ZmsSt-8vbjkJTd8gmOBNOIlK-crbwZ9ipeyxuYQ7FLvM6kbwFz8Edv2uCP3ZWkmx71QJbIrB2hdZ1C14md4MFogeQYXMgWan3-fsMqSySobLuD2__9_x_DoEZka4QB-A_g7L-9PjRyKr6j3Jbfsw-FVLqczH1MPUyhcGDh3lHtcJDgV5pBCf4_I3JTfqYkV5"
+                    />
+                    <div
+                      class="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-red-500 border-2 border-sidebar-dark"
+                    ></div>
+                  </div>
+                  <span class="text-sm font-medium">Charlie P.</span>
+                </a>
+              </div>
+            </div>
+          </nav>
+          <div class="p-4 bg-slate-900/50 flex items-center gap-3">
+            <div class="flex-1 overflow-hidden">
+              <p class="text-xs font-bold truncate">Alex Designer</p>
+              <p class="text-[10px] text-slate-500 flex items-center gap-1">
+                <span class="size-1.5 bg-green-500 rounded-full"></span> Online
+              </p>
+            </div>
+            <div class="flex gap-2">
+              <span
+                class="material-symbols-outlined text-slate-500 hover:text-white cursor-pointer text-[18px]"
+                >mic</span
+              >
+              <span
+                class="material-symbols-outlined text-slate-500 hover:text-white cursor-pointer text-[18px]"
+                >headphones</span
+              >
+            </div>
+          </div>
+        </aside>
+        <main
+          class="flex-1 flex flex-col bg-background-light dark:bg-background-dark relative"
+        >
+          <header
+            class="h-16 px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0"
+          >
+            <div class="flex items-center gap-2">
+              <span class="text-slate-400 font-medium">#</span>
+              <h1 class="font-bold text-base">general</h1>
+              <span
+                class="material-symbols-outlined text-slate-500 text-sm cursor-pointer ml-2 hover:text-yellow-400"
+                >star</span
+              >
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex -space-x-2 mr-2">
+                <img
+                  class="size-7 rounded-full border-2 border-background-dark"
+                  data-alt="Member profile avatar thumbnail 1"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvlQ_asrm2cwxdQ6NPGzHrC1XtBoBLs897ByIfm4LKbuBgxkpEgXa4_Yxj2woCvxLaHSYRAnDz3jyMsvXt2V0K_NNIy-0yPxy9x4w226Zz10nIYNx8b_bKTd1iYtMA4YYxmolLwUAUECAXio7D0kk5QHFYQxxgWXm7u2TjAVxloTZo8UdoagJyBrp3oIYNlHINlH9-QHOL0HXQujPE-T7jJVvK5krS8alyWQ7bdLtWkAAYg74SKkygTqo1AGCDW4JmaxLR1qmV_Y16"
+                />
+                <img
+                  class="size-7 rounded-full border-2 border-background-dark"
+                  data-alt="Member profile avatar thumbnail 2"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmpOOQMblBa6NaWkdkqx6sNsh5hlGcwXoX3pgiiIYgEpFALaPRpZ6_ofAy4rX-4LPGB9z8iy398Ff88muD3H9g4_VfCcxdGYpy94klOOWZ9cVE8BPQ1LuuJRvgDUtg8H4EEIYWVMserplpVkQtGIaGnoL1IUKnrXuRnoMTITKqT1JxOettIa0C3vpym7x2NH3chtss3_7C4YRWddtKKQVUVA6YYMIK0zA8-7s-nplusm22h3Z5ide1jA76r7vW4v6NRW_sKSsFdm7F"
+                />
+                <img
+                  class="size-7 rounded-full border-2 border-background-dark"
+                  data-alt="Member profile avatar thumbnail 3"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIXnH2Unr3iNp0ryoJMFI8tfnnAo1FQnv2G7Nez_04-LLefEa9afpieagnxlWHcHCfsQ44zgUJXjssBNVfH_oRLRuGxTfNKrcx81WNPP2xhDX2t1EhlhiEI8yqRWDEQT6-YvSSB7FE6DKF80hAmAT9E5gji27smQ-59Knvq4YF2QYd_4qe8gLY21FPUIS-BdEcP9RNMLlBCqLte3Ecw41QukCQNz1Il-LVd38CYlkzJkcTBYZ_uPdh3TpHRjDx0Qqqsu_YyNJY13fb"
+                />
+                <div
+                  class="size-7 rounded-full border-2 border-background-dark bg-slate-800 text-[10px] flex items-center justify-center font-bold"
+                >
+                  +12
+                </div>
+              </div>
+              <span
+                class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white"
+                >person_add</span
+              >
+              <span
+                class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white"
+                >info</span
+              >
+            </div>
+          </header>
+          <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+            <div class="flex gap-4 group message-row relative">
+              <img
+                class="size-10 rounded-xl shrink-0"
+                data-alt="Charlie's profile picture for message"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC5WjPfnt5JIhtxzW_KRQkc99Z7ujIHh_6G-LUAwU6phkOpU1SBxyVeWwbQuBMV73qNlLCr6VnDFNugcF8_3b-DhkK-OHMEh9ZLOxp6qQMaBC79Y9FqWwMnaTAmNqN_NrOUHCQDD4wnWpEUQOyLjzR7iurVlqUhShvoM1IaEmtkfTZw0ceZytp6ljJQ9_u_wUzWxSH4jw3GbaD7ACDKlR16gR_rTIm9-f2ngPCSXxtlrrLuP36sMRkWR7_XZkN4Nr4Z1peRsXIKIko"
+              />
+              <div class="flex-1 space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm">Charlie P.</span>
+                  <span class="text-[10px] text-slate-500">10:24 AM</span>
+                </div>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                  Hey team! Has anyone had a chance to look at the new brand
+                  guidelines for Project Alpha? I'm starting on the landing page
+                  layout today.
+                </p>
+              </div>
+              <div
+                class="message-actions opacity-0 absolute -top-4 right-0 bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center gap-1 transition-opacity"
+              >
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm"
+                    >add_reaction</span
+                  >
+                </button>
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm">reply</span>
+                </button>
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm"
+                    >more_horiz</span
+                  >
+                </button>
+              </div>
+            </div>
+            <div class="flex gap-4 group message-row relative">
+              <img
+                class="size-10 rounded-xl shrink-0"
+                data-alt="Alice's profile picture for message"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMlscB3YGPTJ9I_Fjoc1hwGxhGUCQGNqx4yxV0yeaDL4itYDyLreTBft8AskWJWnKVVTyUca7ukMUty4wO1PN11uQamkEOoK-PhHQ1wffvG1T4C1R59K0slBU_9V75fnwPKsxRSiBupbhz-MDPNFG44JMCFwi4T_FKkxbRMJWr12kdJy3XP8dGPpMgQ0T0yeVCm0mVRTik08Lo_I4AVLrvoyu7sc85RHqPmeFZ74F9e65SX-PVLwXryXCbrEb1eVzzHCvE_HILl40N"
+              />
+              <div class="flex-1 space-y-3">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm">Alice Johnson</span>
+                  <span class="text-[10px] text-slate-500">10:45 AM</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  Just finished the high-fidelity mockups for the dashboard.
+                  What do you think about this primary color contrast?
+                </p>
+                <div class="max-w-md">
+                  <img
+                    class="rounded-xl border border-slate-800 w-full hover:brightness-90 transition-all cursor-pointer"
+                    data-alt="Modern UI design concept with blue gradients"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxwrZ0SF6phb5RZM4QeHrad-nPbAFDcEbwya1hOSgdd9KFUWJMM-nx7biSUvcwYcn4e6XWtfhHEtb-j2uVE1r0fZPUdYtsSycZrzHD_HBtDDzvd7jPWnQGWTqdi9JzhFUfSXUhkSuHg6ja2i9A8DD7Qrd38Tq6tRqMDWzMPVSCxkHbxRIlp0gqHec1pE1ieFGoAWI9ZIkP7u6apl1wLbuSNVu62YE1hAfdb-bXBey-QMc4QQCXXFU0wK4F10cRfMwCKH8uBNgRk4S7"
+                  />
+                  <div class="flex gap-2 mt-2">
+                    <div
+                      class="px-2 py-1 bg-primary/20 text-primary text-[10px] font-bold rounded"
+                    >
+                      DESIGN_V2.PNG
+                    </div>
+                    <div
+                      class="px-2 py-1 bg-slate-800 text-slate-400 text-[10px] font-bold rounded"
+                    >
+                      12.4 MB
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="message-actions opacity-0 absolute -top-4 right-0 bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center gap-1 transition-opacity"
+              >
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm"
+                    >add_reaction</span
+                  >
+                </button>
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm">reply</span>
+                </button>
+              </div>
+            </div>
+            <div class="flex gap-4 group message-row relative">
+              <img
+                class="size-10 rounded-xl shrink-0"
+                data-alt="Bob's profile picture for message"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKyqkEeA6G34y93BmrhhE7DrsZCaXbvcXgKSadOe9ZwjFofqgC40PgbXxrJ8rfVPItYtwDz1wYh419bCCMYgTrZOE4IfngbrzRjwD9VI71KABY68h6ogkSkDUPxxhH6wsCrFoLP7NiYLJDRo6BaLYdZ860bJqSBEpF-QIm0YsvX6wSk1yYdnPyZ8CJT9_lKjgp4JsG44q8NDW4lCSHtt_gNYf1FwNfwS2t4aUZyWoB6Ejx2DXw6CBGFfDN-KiN0bV2Fnv6kBXjZBpu"
+              />
+              <div class="flex-1 space-y-3">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm">Bob Smith</span>
+                  <span class="text-[10px] text-slate-500">11:12 AM</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  Check out this article on the future of social networking UI.
+                  Really relevant to what we're building.
+                </p>
+                <div
+                  class="max-w-xl bg-slate-900 border-l-4 border-primary rounded-r-xl overflow-hidden shadow-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <div class="flex flex-col md:flex-row">
+                    <div class="flex-1 p-4">
+                      <h4 class="font-bold text-sm text-white mb-1">
+                        Modern Social Interfaces: A Comprehensive Guide 2024
+                      </h4>
+                      <p class="text-xs text-slate-400 line-clamp-2">
+                        Exploring how high-density dashboards are evolving to
+                        balance communication and rich media workflows in the
+                        modern workplace...
+                      </p>
+                      <span
+                        class="text-[10px] text-primary font-medium mt-2 block uppercase tracking-wider"
+                        >UI-Design-Blog.com</span
+                      >
+                    </div>
+                    <div class="md:w-32 bg-slate-800 shrink-0">
+                      <div
+                        class="h-full w-full bg-cover bg-center min-h-[80px]"
+                        data-alt="Abstract blue background with data visualization patterns"
+                        style="
+                          background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOqV_gbCyEvKVkIFw1L9kUTnjLc3-8gZ8qTH-Q0K4XTxNGOjYXOwiqXVtYveknVwnnV1gtgSTWuCrJtT0C1iurm9RX4wOx4RCIJqBU7U8PJLqGCsKzsizWXJyrW3ZNaHnhoAeXDUTm-zDDOIDy0eEWaRpUvkFq_X2L5ZgD_HEASLp82Q1PHcgf1vaphTuk0AP2qdDQmUeVGrVYx055uHwboOUkGg9u7j86NfW5nPH7WXpBXFhO6nWTnjVvI2TQadGeCyvcsOEIYVUQ');
+                        "
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="message-actions opacity-0 absolute -top-4 right-0 bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center gap-1 transition-opacity"
+              >
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm"
+                    >add_reaction</span
+                  >
+                </button>
+                <button class="p-1.5 hover:bg-slate-700 rounded">
+                  <span class="material-symbols-outlined text-sm">reply</span>
+                </button>
+              </div>
+            </div>
+            <div class="flex gap-4 group message-row relative">
+              <img
+                class="size-10 rounded-xl shrink-0"
+                data-alt="Alex's profile picture for threaded reply"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBopQTwWCOSpXfVxMoE0oTCTXdpeQOkfaqWUj-u5-eVjcFQdpgwOScFxW5A9NgAsE1XdXWCBNSqVmxCPknxxkpzCoxuNBgcN6_Dia-8u5NBUppU9z_Tw_0iEugFrQdKw6xQFsRaMlK8kc9Lcc_xcG6ooViZR71uzIySzdnBD-k4J5ncfv0yg5YAwJ6ghNYxTK1ByNgbuaHvXIzj0DnxxXE3FnXHz94bd0BYQQo_Sbzi4fcL1JQ9TyoYmeWBVIcn93k3BaPMiaJyYeX8"
+              />
+              <div class="flex-1 space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm">Alex Designer</span>
+                  <span class="text-[10px] text-slate-500">11:30 AM</span>
+                </div>
+                <div
+                  class="relative pl-6 py-1 text-slate-500 text-xs border-l-2 border-slate-700"
+                >
+                  <div
+                    class="absolute -left-[2px] top-0 bottom-0 w-[2px] bg-slate-700"
+                  ></div>
+                  <span class="font-semibold text-slate-400"
+                    >Alice Johnson:</span
+                  >
+                  "Just finished the high-fidelity mockups for the dashboard..."
+                </div>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                  The contrast looks perfect for dark mode! Maybe we could try a
+                  slightly lighter tint for the sidebar icons? Just a thought.
+                </p>
+                <div
+                  class="flex items-center gap-2 text-primary font-bold text-[11px] mt-1 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-xs">forum</span>
+                  <span>4 replies</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-2 shrink-0">
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-primary/50 transition-all"
+            >
+              <div
+                class="flex items-center gap-1 p-1.5 border-b border-slate-800"
+              >
+                <button
+                  class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >format_bold</span
+                  >
+                </button>
+                <button
+                  class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >format_italic</span
+                  >
+                </button>
+                <button
+                  class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >format_list_bulleted</span
+                  >
+                </button>
+                <button
+                  class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >code</span
+                  >
+                </button>
+                <div class="w-[1px] h-4 bg-slate-800 mx-1"></div>
+                <button
+                  class="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]">add</span>
+                </button>
+              </div>
+              <div class="flex items-center p-3">
+                <textarea
+                  class="flex-1 bg-transparent border-none resize-none focus:ring-0 text-sm placeholder:text-slate-600 py-1 scrollbar-hide"
+                  placeholder="Message #general"
+                  rows="1"
+                ></textarea>
+                <div class="flex items-center gap-2 ml-2">
+                  <button
+                    class="p-2 text-slate-400 hover:text-white transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-[20px]"
+                      >mood</span
+                    >
+                  </button>
+                  <button
+                    class="size-9 bg-primary hover:bg-primary/90 rounded-lg flex items-center justify-center text-white transition-all shadow-lg shadow-primary/20"
+                  >
+                    <span class="material-symbols-outlined text-[20px]"
+                      >send</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <aside
+          class="w-72 bg-sidebar-dark border-l border-slate-200 dark:border-slate-800 hidden xl:flex flex-col"
+        >
+          <div
+            class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between"
+          >
+            <h3 class="font-bold text-sm">Details</h3>
+            <span
+              class="material-symbols-outlined text-slate-500 cursor-pointer hover:text-white"
+              >close</span
+            >
+          </div>
+          <div class="p-6 flex flex-col items-center text-center space-y-4">
+            <div
+              class="size-24 bg-primary/10 rounded-2xl flex items-center justify-center text-primary"
+            >
+              <span class="material-symbols-outlined text-4xl">tag</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-lg">#general</h4>
+              <p class="text-xs text-slate-500 mt-1">
+                A place for the entire design team to discuss broad projects and
+                announcements.
+              </p>
+            </div>
+            <button
+              class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-bold transition-colors"
+            >
+              Edit Description
+            </button>
+          </div>
+          <div class="px-6 py-4 border-t border-slate-800">
+            <h4 class="text-xs font-bold uppercase text-slate-500 mb-4">
+              Pinned Messages
+            </h4>
+            <div class="space-y-4">
+              <div
+                class="p-3 bg-background-dark rounded-xl border border-slate-800 text-xs"
+              >
+                <p class="text-slate-400 italic">
+                  "Final deadline for Project Alpha is Next Friday at 5 PM."
+                </p>
+                <p class="text-primary mt-2 font-bold">From Alex Designer</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
